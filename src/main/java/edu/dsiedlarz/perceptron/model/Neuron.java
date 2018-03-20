@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 public class Neuron implements NeuronInput {
+    public final String name;
     private List<Neuron> inputs = new ArrayList<>();
     public List<Neuron> outputs = new ArrayList<>();
     public List<Double> weights = new ArrayList<>();
@@ -16,9 +17,10 @@ public class Neuron implements NeuronInput {
 
 //    private Double bias;
 
-    private Double beta = 0.1;
+    private Double beta = 1D;
 
-    public Neuron(int inputDataCount) {
+    public Neuron(String name, int inputDataCount) {
+        this.name = name;
         Random random = new Random();
 //        bias = random.nextDouble() * 0.2 - 0.1;
         for (int i = 0; i < inputDataCount; i++) {
@@ -26,7 +28,8 @@ public class Neuron implements NeuronInput {
         }
     }
 
-    public Neuron(List<Neuron> inputNeurons, int inputDataCount) {
+    public Neuron(String name, List<Neuron> inputNeurons, int inputDataCount) {
+        this.name = name;
         this.inputs = inputNeurons;
 
         Random random = new Random();
@@ -45,12 +48,12 @@ public class Neuron implements NeuronInput {
         for (int i = 0; i < neuronDataInputs.size(); i++) {
             weightedSum += neuronDataInputs.get(i).getOutput() * weights.get(i);
 
-            System.out.println(String.format("%d hidden neuron: %f * %f = %f", i, neuronDataInputs.get(i).getOutput(), weights.get(i), neuronDataInputs.get(i).getOutput() * weights.get(i)));
+//            System.out.println(String.format("%d hidden neuron: %f * %f = %f", i, neuronDataInputs.get(i).getOutput(), weights.get(i), neuronDataInputs.get(i).getOutput() * weights.get(i)));
         }
-        System.out.println("Hhidden neuron: WeightedSum = " + weightedSum);
+//        System.out.println("Hhidden neuron: WeightedSum = " + weightedSum);
 //        weightedSum += bias;
 
-        outputValue = Math.tanh(beta * weightedSum);
+        outputValue = 1 / (1 + Math.pow(Math.E, -weightedSum));
 
         System.out.println("Hhidden neuron: outputValue = " + outputValue);
 
@@ -61,16 +64,17 @@ public class Neuron implements NeuronInput {
         for (int i = 0; i < inputs.size(); i++) {
             weightedSum += inputs.get(i).getOutput() * weights.get(i);
 
-            System.out.println(String.format("%d output neuron: %f * %f = %f", i, inputs.get(i).getOutput(), weights.get(i), inputs.get(i).getOutput() * weights.get(i)));
+//            System.out.println(String.format("%d output neuron: %f * %f = %f", i, inputs.get(i).getOutput(), weights.get(i), inputs.get(i).getOutput() * weights.get(i)));
 
         }
 
-        System.out.println("Output neuron: WeightedSum = " + weightedSum);
+//        System.out.println("Output neuron: WeightedSum = " + weightedSum);
 
 //        weightedSum += bias;
 
-        outputValue = Math.tanh(beta * weightedSum);
+//        outputValue = Math.tanh(beta * weightedSum);
 
+        outputValue = 1 / (1 + Math.pow(Math.E, -weightedSum));
         System.out.println("Output neuron: outputValue = " + outputValue);
 
     }
@@ -81,27 +85,12 @@ public class Neuron implements NeuronInput {
         return this.outputValue;
     }
 
-    @Override
-    public String toString() {
-        return weightedSum.toString();
-    }
-
-    public void setDelta(Double delta) {
-        this.delta = delta;
-    }
-
-    public Double getDelta() {
-        return delta;
-    }
-
     public void afterGuess() {
-//        Double fPrim1 = Math.pow(Math.E, -getOutput()) / Math.pow(Math.pow(1 + Math.E, -getOutput()), 2);
-//        Double fPrim = Math.log10(Math.pow(Math.E, -Perceptron.LEARNING_RATE * weightedSum) + 1);
 
         for (int i = 0; i < inputs.size(); i++) {
-            Double deltaW = -Perceptron.LEARNING_RATE * delta * (1 - outputValue) * outputValue * inputs.get(i).getOutput();
+            Double deltaW = Perceptron.LEARNING_RATE * delta * (1 - outputValue) * outputValue * inputs.get(i).getOutput();
 
-            weights.set(i, weightedSum + deltaW);
+            weights.set(i, weights.get(i) + deltaW);
         }
 
 //        Double deltaW = -Perceptron.LEARNING_RATE * delta * (1 - outputValue) * outputValue * 1;
@@ -118,9 +107,9 @@ public class Neuron implements NeuronInput {
         }
 
         for (int i = 0; i < dataInputs.size(); i++) {
-            Double deltaW = -Perceptron.LEARNING_RATE * delta * (1 - outputValue) * outputValue * dataInputs.get(i).getOutput();
+            Double deltaW = Perceptron.LEARNING_RATE * delta * (1 - outputValue) * outputValue * dataInputs.get(i).getOutput();
 
-            weights.set(i, weightedSum + deltaW);
+            weights.set(i, weights.get(i) + deltaW);
         }
 
 //        Double deltaW = -Perceptron.LEARNING_RATE * delta * (1 - outputValue) * outputValue * 1;
@@ -134,5 +123,20 @@ public class Neuron implements NeuronInput {
             }
         }
         return null;
+    }
+
+
+
+    public void setDelta(Double delta) {
+        this.delta = delta;
+    }
+
+    public Double getDelta() {
+        return delta;
+    }
+
+    @Override
+    public String toString() {
+        return weightedSum.toString();
     }
 }

@@ -2,7 +2,6 @@ package edu.dsiedlarz.perceptron;
 
 import edu.dsiedlarz.perceptron.model.IrisData;
 import edu.dsiedlarz.perceptron.model.Perceptron;
-import edu.dsiedlarz.perceptron.model.SubNetwork;
 import edu.dsiedlarz.perceptron.service.IrisDataLoader;
 
 import java.util.Collections;
@@ -18,7 +17,7 @@ public class Main {
 
         Perceptron perceptron = new Perceptron(inputs);
 
-        for (int i = 0; i < 1 ; i++) {
+        for (int i = 0; i < 200 ; i++) {
             perceptron.learn();
         }
     }

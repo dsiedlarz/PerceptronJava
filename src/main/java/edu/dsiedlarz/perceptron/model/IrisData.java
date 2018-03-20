@@ -31,16 +31,16 @@ public class IrisData {
 
     public List<NeuronDataInput> getNeuronDataInputs() {
 
-//        return values.stream().map(NeuronDataInput::new).collect(Collectors.toList());
+        return values.stream().map(NeuronDataInput::new).collect(Collectors.toList());
+//
+//        final Double[] min = {Double.MAX_VALUE};
+//        final Double[] max = {Double.MIN_VALUE};
 
-        final Double[] min = {Double.MAX_VALUE};
-        final Double[] max = {Double.MIN_VALUE};
-
-        values.forEach(x -> {
-            if (x < min[0]) min[0] = x;
-            if (x > max[0]) max[0] = x;
-        });
-
-        return values.stream().map(x -> new NeuronDataInput((x - min[0]) / (max[0] - min[0]))).collect(Collectors.toList());
+//        values.forEach(x -> {
+//            if (x < min[0]) min[0] = x;
+//            if (x > max[0]) max[0] = x;
+//        });
+//
+//        return values.stream().map(x -> new NeuronDataInput((x - min[0]) / (max[0] - min[0]))).collect(Collectors.toList());
     }
 }

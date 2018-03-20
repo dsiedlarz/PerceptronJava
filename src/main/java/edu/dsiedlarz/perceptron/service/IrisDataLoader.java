@@ -20,4 +20,6 @@ public class IrisDataLoader {
                  .lines().map(IrisData::ofLine).collect(Collectors.toList());
 
     }
+
+//    public void normalize
 }

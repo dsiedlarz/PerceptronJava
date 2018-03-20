@@ -14,13 +14,13 @@ public class SubNetwork {
         outputNeurons = new ArrayList<>();
 
         for (int i = 0; i < inputNeuronsCount ; i++) {
-            Neuron neuron = new Neuron(inputsPerNeuron);
+            Neuron neuron = new Neuron("Hidden #"+i, inputsPerNeuron);
 
             inputNeurons.add(neuron);
         }
 
         for (int i = 0; i < outputNeuronCount ; i++) {
-            outputNeurons.add(new Neuron(this.inputNeurons, 0));
+            outputNeurons.add(new Neuron("Output #" + i, this.inputNeurons, 0));
         }
 
 

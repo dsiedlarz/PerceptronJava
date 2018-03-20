@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Perceptron {
 
-    public static double LEARNING_RATE = 0.01;
+    public static double LEARNING_RATE = 0.1;
     private List<IrisData> inputData;
     private SubNetwork subNetwork;
 
@@ -28,7 +28,6 @@ public class Perceptron {
             int highestIndex = 0;
             Double maxValue = Double.MIN_VALUE;
             for (int i = 0; i < outputs.size(); i++) {
-                System.out.print(outputs.get(i).getOutput() + " ");
                 Double outputValue = outputs.get(i).getOutput();
                 if (outputValue > maxValue) {
                     maxValue = outputValue;
@@ -37,6 +36,8 @@ public class Perceptron {
             }
 
             System.out.println();
+            System.out.println(input.name);
+            System.out.println("-------------------------------------------------------------------------------------------------------");
             System.out.println();
             System.out.println();
             switch (input.name) {
