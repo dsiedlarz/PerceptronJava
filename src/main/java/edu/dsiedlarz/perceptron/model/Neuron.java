@@ -92,10 +92,6 @@ public class Neuron implements NeuronInput {
 
             weights.set(i, weights.get(i) + deltaW);
         }
-
-//        Double deltaW = -Perceptron.LEARNING_RATE * delta * (1 - outputValue) * outputValue * 1;
-//        bias = bias + deltaW;
-
     }
 
     public void afterGuessHidden() {
@@ -111,9 +107,6 @@ public class Neuron implements NeuronInput {
 
             weights.set(i, weights.get(i) + deltaW);
         }
-
-//        Double deltaW = -Perceptron.LEARNING_RATE * delta * (1 - outputValue) * outputValue * 1;
-//        bias = bias + deltaW;
     }
 
     private Double getWeightedDelta(Neuron neuron) {
