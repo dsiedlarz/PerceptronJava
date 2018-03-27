@@ -6,11 +6,11 @@ import java.util.stream.Collectors;
 
 public class IrisData {
 
-    List<Double> values = new ArrayList<>();
+    public List<Double> values = new ArrayList<>();
 
     public final String name;
 
-    private IrisData(Double var1, Double var2, Double var3, Double var4, String name) {
+    public IrisData(Double var1, Double var2, Double var3, Double var4, String name) {
         values.add(var1);
         values.add(var2);
         values.add(var3);

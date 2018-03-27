@@ -31,4 +31,8 @@ public abstract class AbstractNeuron {
 
     public abstract void afterGuess();
     public abstract void afterGuessHidden();
+
+    public void setDelta(double delta) {
+        this.delta = delta;
+    }
 }

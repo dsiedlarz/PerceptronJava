@@ -1,5 +1,7 @@
 package edu.dsiedlarz.perceptron.model;
 
+import edu.dsiedlarz.perceptron.model.neuron.AbstractNeuron;
+import edu.dsiedlarz.perceptron.model.neuron.Bias;
 import edu.dsiedlarz.perceptron.model.neuron.DataNeuron;
 import edu.dsiedlarz.perceptron.model.neuron.ProcessingNeuron;
 
@@ -11,7 +13,7 @@ public class Perceptron {
     public static double LEARNING_RATE = 0.1;
     private List<IrisData> inputData;
     private SubNetwork subNetwork;
-    private List<DataNeuron> dataNeurons;
+    private List<AbstractNeuron> dataNeurons;
 
     private double guessedValues = 0;
     private double tries = 0;
@@ -24,6 +26,7 @@ public class Perceptron {
         for (int i = 0; i < 4; i++) {
             dataNeurons.add(new DataNeuron());
         }
+        dataNeurons.add(new Bias());
 
 
         for (int i = 0; i < this.dataNeurons.size() ; i++) {
@@ -44,7 +47,7 @@ public class Perceptron {
             }
 
             subNetwork.propagationPhase();
-            List<ProcessingNeuron> outputs = subNetwork.getOutputNeurons();
+            List<AbstractNeuron> outputs = subNetwork.getOutputNeurons();
 
             tries++;
             int highestIndex = 0;
@@ -57,11 +60,6 @@ public class Perceptron {
                 }
             }
 
-            System.out.println();
-            System.out.println(input.name);
-            System.out.println("-------------------------------------------------------------------------------------------------------");
-            System.out.println();
-            System.out.println();
             switch (input.name) {
                 case "Iris-setosa":
 

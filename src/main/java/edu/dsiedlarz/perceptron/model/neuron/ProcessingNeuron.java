@@ -26,8 +26,4 @@ public class ProcessingNeuron extends AbstractNeuron {
 
         }
     }
-
-    public void setDelta(double delta) {
-        this.delta = delta;
-    }
 }

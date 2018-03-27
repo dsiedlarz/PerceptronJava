@@ -1,6 +1,7 @@
 package edu.dsiedlarz.perceptron.model;
 
 import edu.dsiedlarz.perceptron.model.neuron.AbstractNeuron;
+import edu.dsiedlarz.perceptron.model.neuron.Bias;
 import edu.dsiedlarz.perceptron.model.neuron.ProcessingNeuron;
 
 import java.util.ArrayList;
@@ -8,8 +9,8 @@ import java.util.List;
 
 public class SubNetwork {
 
-    public List<ProcessingNeuron> inputNeurons;
-    public List<ProcessingNeuron> outputNeurons;
+    public List<AbstractNeuron> inputNeurons;
+    public List<AbstractNeuron> outputNeurons;
 
 
     public SubNetwork(int inputNeuronsCount,  int outputNeuronCount) {
@@ -24,12 +25,14 @@ public class SubNetwork {
             outputNeurons.add(new ProcessingNeuron());
         }
 
+        inputNeurons.add(new Bias());
 
         for (int i = 0; i < inputNeuronsCount ; i++) {
             for (int j = 0; j < outputNeuronCount; j++) {
                 new WeightedConnection(this.inputNeurons.get(i), this.outputNeurons.get(j));
             }
         }
+
     }
 
     public void propagationPhase() {
@@ -37,12 +40,12 @@ public class SubNetwork {
         outputNeurons.forEach(AbstractNeuron::computeWeightSumFromInputData);
     }
 
-    public List<ProcessingNeuron> getOutputNeurons() {
+    public List<AbstractNeuron> getOutputNeurons() {
         return outputNeurons;
     }
 
     public void backpropagationPhase() {
-        outputNeurons.forEach(ProcessingNeuron::afterGuess);
-        inputNeurons.forEach(ProcessingNeuron::afterGuessHidden);
+        outputNeurons.forEach(AbstractNeuron::afterGuess);
+        inputNeurons.forEach(AbstractNeuron::afterGuessHidden);
     }
 }
