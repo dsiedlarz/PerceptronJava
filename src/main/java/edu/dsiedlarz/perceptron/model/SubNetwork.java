@@ -9,6 +9,12 @@ import java.util.List;
 
 public class SubNetwork {
 
+    List<SubNetwork> previousSubnetworks = new ArrayList<>();
+
+    public double guessedValues = 0;
+    public double tries = 0;
+
+
     public List<AbstractNeuron> inputNeurons;
     public List<AbstractNeuron> outputNeurons;
 
@@ -47,5 +53,14 @@ public class SubNetwork {
     public void backpropagationPhase() {
         outputNeurons.forEach(AbstractNeuron::afterGuess);
         inputNeurons.forEach(AbstractNeuron::afterGuessHidden);
+//        this.previousSubnetworks.forEach(SubNetwork::nextBackbprobagation);
     }
+
+    public void nextBackbprobagation() {
+        outputNeurons.forEach(AbstractNeuron::afterGuessHidden);
+        inputNeurons.forEach(AbstractNeuron::afterGuessHidden);
+        this.previousSubnetworks.forEach(SubNetwork::nextBackbprobagation);
+    }
+
+
 }

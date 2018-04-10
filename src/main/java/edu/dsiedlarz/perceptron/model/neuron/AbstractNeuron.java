@@ -18,7 +18,6 @@ public abstract class AbstractNeuron {
         return outputValue;
     }
 
-
     public void computeWeightSumFromInputData() {
         weightedSum = 0D;
         for (int i = 0; i < inputs.size(); i++) {
@@ -34,5 +33,12 @@ public abstract class AbstractNeuron {
 
     public void setDelta(double delta) {
         this.delta = delta;
+    }
+
+    public Double getDelta() {
+        if (delta == null) {
+            return 0D;
+        }
+        return delta;
     }
 }

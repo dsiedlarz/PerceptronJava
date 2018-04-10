@@ -1,7 +1,6 @@
-package edu.dsiedlarz.perceptron.service;
+package edu.dsiedlarz.perceptron.model.data;
 
-import edu.dsiedlarz.perceptron.model.IrisData;
-import edu.dsiedlarz.perceptron.model.NeuronDataInput;
+import edu.dsiedlarz.perceptron.model.data.IrisData;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

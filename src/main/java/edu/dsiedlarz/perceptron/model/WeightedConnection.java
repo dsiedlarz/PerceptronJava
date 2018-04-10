@@ -18,7 +18,7 @@ public class WeightedConnection {
     public WeightedConnection(AbstractNeuron in, AbstractNeuron out) {
         this.in = in;
         this.out = out;
-        weight = random.nextDouble() * 0.2 - 0.1;
+        weight = random.nextDouble() * 4 - 2;
 
         this.in.outputs.add(this);
         this.out.inputs.add(this);
@@ -29,6 +29,6 @@ public class WeightedConnection {
     }
 
     public Double getWeightedDelta() {
-        return weight * out.delta;
+        return weight * out.getDelta();
     }
 }

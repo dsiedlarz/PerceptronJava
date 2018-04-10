@@ -1,9 +1,9 @@
 package edu.dsiedlarz.perceptron.model;
 
+import edu.dsiedlarz.perceptron.model.data.IrisData;
 import edu.dsiedlarz.perceptron.model.neuron.AbstractNeuron;
 import edu.dsiedlarz.perceptron.model.neuron.Bias;
 import edu.dsiedlarz.perceptron.model.neuron.DataNeuron;
-import edu.dsiedlarz.perceptron.model.neuron.ProcessingNeuron;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,61 +11,87 @@ import java.util.List;
 public class Perceptron {
 
     public static double LEARNING_RATE = 0.1;
-    private List<IrisData> inputData;
-    private SubNetwork subNetwork;
-    private List<AbstractNeuron> dataNeurons;
-
-    private double guessedValues = 0;
-    private double tries = 0;
+    private List<IrisData> inputData = new ArrayList<>();
+    private List<SubNetwork> subNetworks = new ArrayList<>();
+    private List<AbstractNeuron> dataNeurons = new ArrayList<>();
 
     public Perceptron(List<IrisData> inputData) {
 
         this.inputData = inputData;
-        this.subNetwork = new SubNetwork(4, 3);
+
         dataNeurons = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
             dataNeurons.add(new DataNeuron());
         }
         dataNeurons.add(new Bias());
 
+        for (int i = 0; i < 1; i++) {
+            this.subNetworks.add(createSubNetwork());
 
-        for (int i = 0; i < this.dataNeurons.size() ; i++) {
-            for (int j = 0; j < this.subNetwork.inputNeurons.size(); j++) {
-            new WeightedConnection(dataNeurons.get(i), this.subNetwork.inputNeurons.get(j));
-            }
         }
     }
 
-    public void learn() {
-        guessedValues = 0;
-        tries = 0;
+    public SubNetwork createSubNetwork() {
+        SubNetwork subNetwork=  new SubNetwork(4, 3);
 
+
+        for (int i = 0; i < this.dataNeurons.size() ; i++) {
+            for (int j = 0; j < subNetwork.inputNeurons.size(); j++) {
+                new WeightedConnection(dataNeurons.get(i), subNetwork.inputNeurons.get(j));
+            }
+        }
+
+        for (int i = 0; i < subNetworks.size(); i++) {
+            for (int j = 0; j < subNetworks.get(i).outputNeurons.size() ; j++) {
+                for (int k = 0; k < subNetwork.inputNeurons.size(); k++) {
+                    new WeightedConnection(subNetworks.get(i).outputNeurons.get(j), subNetwork.inputNeurons.get(j));
+                }
+            }
+        }
+
+        subNetwork.previousSubnetworks.addAll(this.subNetworks);
+        return subNetwork;
+    }
+
+    public List<Double> learn() {
+
+        subNetworks.forEach(s -> {s.tries =0; s.guessedValues = 0;});
+        List<Double> efficiences = new ArrayList<>();
         inputData.forEach(input -> {
 
             for (int i = 0; i < input.values.size(); i++) {
                 dataNeurons.get(i).outputValue = input.values.get(i);
             }
 
+            for (int i = 0; i < this.subNetworks.size() ; i++) {
+
+            SubNetwork subNetwork = subNetworks.get(i);
+
             subNetwork.propagationPhase();
             List<AbstractNeuron> outputs = subNetwork.getOutputNeurons();
 
-            tries++;
+            subNetwork.tries++;
             int highestIndex = 0;
             Double maxValue = Double.MIN_VALUE;
-            for (int i = 0; i < outputs.size(); i++) {
-                Double outputValue = outputs.get(i).getOutputValue();
+            for (int j = 0; j < subNetwork.outputNeurons.size(); j++) {
+                Double outputValue = outputs.get(j).getOutputValue();
                 if (outputValue > maxValue) {
                     maxValue = outputValue;
-                    highestIndex = i;
+                    highestIndex = j;
                 }
             }
+
+            subNetwork.outputNeurons.forEach(neuron -> {
+
+                    }
+            );
 
             switch (input.name) {
                 case "Iris-setosa":
 
                     if (highestIndex == 0) {
 //                        System.out.println("Succses");
-                        guessedValues++;
+                        subNetwork.guessedValues++;
                     } else {
 //                        System.out.println("Failure");
 
@@ -80,7 +106,7 @@ public class Perceptron {
 
                     if (highestIndex == 1) {
 //                        System.out.println("Succses");
-                        guessedValues++;
+                        subNetwork.guessedValues++;
 
 
                     } else {
@@ -96,7 +122,7 @@ public class Perceptron {
 
                     if (highestIndex == 2) {
 //                        System.out.println("Succses");
-                        guessedValues++;
+                        subNetwork.guessedValues++;
 
                     } else {
 //                        System.out.println("Failure");
@@ -108,8 +134,14 @@ public class Perceptron {
             }
 
             subNetwork.backpropagationPhase();
+            }
         });
+        for (int i = 0; i < this.subNetworks.size() ; i++) {
+        SubNetwork subNetwork = subNetworks.get(i);
+        efficiences.add(subNetwork.guessedValues / subNetwork.tries);
+            System.out.println("Efficiency " + i +" is " + (subNetwork.guessedValues / subNetwork.tries));
+        }
 
-        System.out.println("Efficiency is " + (guessedValues / tries));
+        return efficiences;
     }
 }

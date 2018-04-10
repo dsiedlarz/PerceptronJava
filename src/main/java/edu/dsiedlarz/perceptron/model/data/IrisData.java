@@ -1,10 +1,15 @@
-package edu.dsiedlarz.perceptron.model;
+package edu.dsiedlarz.perceptron.model.data;
+
+import edu.dsiedlarz.perceptron.model.NeuronDataInput;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class IrisData {
+class IrisData {
+
+    public static List<String> classes = Arrays.asList("Iris-setosa", "Iris-versicolor", "Iris-virginica");
 
     public List<Double> values = new ArrayList<>();
 
